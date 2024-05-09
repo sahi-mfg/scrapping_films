@@ -3,12 +3,17 @@ import requests  # type: ignore
 import pandas as pd  # type: ignore
 
 
+def fetch_and_parse(url: str) -> bs:
+    request = requests.get(url)
+    soup = bs(request.text, "html.parser")
+    return soup
+
+
 def get_films_du_moment(
     base_url: str = "https://www.senscritique.com/films",
 ) -> dict:
     url = base_url + "/toujours-a-l-affiche"
-    request = requests.get(url)
-    soup = bs(request.text, "html.parser")
+    soup = fetch_and_parse(url)
     names = soup.find_all("a", {"class": "sc-e6f263fc-0 sc-df6b780a-1 cTWuvs lbhoSA"})
 
     ratings = soup.find_all("div", {"class": "sc-8251ce8c-5 fTXQip"})
@@ -20,8 +25,7 @@ def get_a_voir_en_streaming(
     base_url: str = "https://www.senscritique.com/films",
 ) -> dict:
     url = base_url + "/streaming"
-    request = requests.get(url)
-    soup = bs(request.text, "html.parser")
+    soup = fetch_and_parse(url)
     names = soup.find_all("p", {"class": "sc-e6f263fc-0 sc-ee95228d-1 GItpw gJUtFN"})
     ratings = soup.find_all("div", {"class": "sc-8251ce8c-5 bVyLNx globalRating"})
     infos = {name.text: rating.text for name, rating in zip(names, ratings)}
@@ -30,8 +34,7 @@ def get_a_voir_en_streaming(
 
 def get_sorties_de_la_semaine(base_url: str) -> dict:
     url = base_url + "/cette-semaine"
-    request = requests.get(url)
-    soup = bs(request.text, "html.parser")
+    soup = fetch_and_parse(url)
     names = soup.find_all("a", {"class": "elco-anchor"})
     ratings = soup.find_all("div", {"class": "elco-rating"})
     infos = {name.text: rating.text for name, rating in zip(names, ratings)}
@@ -39,8 +42,7 @@ def get_sorties_de_la_semaine(base_url: str) -> dict:
 
 
 def get_critiques(base_url: str) -> pd.DataFrame:
-    request = requests.get(base_url)
-    soup = bs(request.text, "html.parser")
+    soup = fetch_and_parse(base_url)
     name_critic = soup.find_all(
         "a", {"class": "sc-e6f263fc-0 sc-b7da4c5c-2 GItpw gvGKDY"}
     )
