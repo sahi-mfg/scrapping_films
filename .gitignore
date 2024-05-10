@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-# Created by https://www.toptal.com/developers/gitignore/api/python
-# Edit at https://www.toptal.com/developers/gitignore?templates=python
-
-### Python ###
-=======
->>>>>>> 051d9c896386a1a8981c204197b0d279c781352e
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -180,4 +173,3 @@ pyrightconfig.json
 .vscode/
 Projet\ ISE\ 3.ipynb
 
-# End of https://www.toptal.com/developers/gitignore/api/python
