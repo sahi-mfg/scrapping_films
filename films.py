@@ -11,20 +11,16 @@ def fetch_and_parse(url: str) -> bs:
 
 
 def get_films_du_moment(
-    base_url: str = "https://www.senscritique.com/films",
+    url: str,
 ) -> dict:
-    url = f"{base_url}/toujours-a-l-affiche"
     soup = fetch_and_parse(url)
-    names = soup.find_all("a", {"class": "sc-e6f263fc-0 sc-df6b780a-1 cTWuvs lbhoSA"})
+    names = soup.find_all("a", {"class": "sc-e6f263fc-0 sc-ff76fb9e-1 cTWuvs fBqRWl"})
     ratings = soup.find_all("div", {"class": "sc-8251ce8c-5 fTXQip"})
     infos = {name.text: rating.text for name, rating in zip(names, ratings)}
     return infos
 
 
-def get_a_voir_en_streaming(
-    base_url: str = "https://www.senscritique.com/films",
-) -> Dict[str, str]:
-    url = f"{base_url}/streaming"
+def get_a_voir_en_streaming(url: str) -> Dict[str, str]:
     soup = fetch_and_parse(url)
     names = soup.find_all("p", {"class": "sc-e6f263fc-0 sc-ee95228d-1 GItpw gJUtFN"})
     ratings = soup.find_all("div", {"class": "sc-8251ce8c-5 bVyLNx globalRating"})
@@ -32,8 +28,7 @@ def get_a_voir_en_streaming(
     return infos
 
 
-def get_sorties_de_la_semaine(base_url: str) -> Dict[str, str]:
-    url = f"{base_url}/cette-semaine"
+def get_sorties_de_la_semaine(url: str) -> Dict[str, str]:
     soup = fetch_and_parse(url)
     names = soup.find_all("a", {"class": "elco-anchor"})
     ratings = soup.find_all("div", {"class": "elco-rating"})
@@ -41,8 +36,8 @@ def get_sorties_de_la_semaine(base_url: str) -> Dict[str, str]:
     return infos
 
 
-def get_critiques(base_url: str) -> pd.DataFrame:
-    soup = fetch_and_parse(base_url)
+def get_critiques(url: str) -> pd.DataFrame:
+    soup = fetch_and_parse(url)
     name_critic = soup.find_all(
         "a", {"class": "sc-e6f263fc-0 sc-b7da4c5c-2 GItpw gvGKDY"}
     )
