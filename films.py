@@ -28,7 +28,11 @@ def get_a_voir_en_streaming(url: str) -> dict:
 
 
 def get_sorties_de_la_semaine(url: str) -> dict:
-    return {}
+    soup = fetch_and_parse(url)
+    names = soup.find_all("a", {"class": "sc-e6f263fc-0 sc-ff76fb9e-1 cTWuvs fBqRWl"})
+    ratings = soup.find_all("div", {"class": "sc-8251ce8c-5 fTXQip"})
+    infos = {name.text: rating.text for name, rating in zip(names, ratings)}
+    return infos
 
 
 def get_critiques(url: str) -> pd.DataFrame:
